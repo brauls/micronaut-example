@@ -19,6 +19,7 @@ import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.test.annotation.MicronautTest;
 import io.micronaut.test.annotation.MockBean;
+import static de.brauls.example.DialogflowFulfillmentController.responseFromIngredientList;
 
 @MicronautTest
 class DialogflowFulfillmentControllerTest {
@@ -44,11 +45,11 @@ class DialogflowFulfillmentControllerTest {
 
         final var payload = validPayload();
         final var request = HttpRequest.POST(DIALOGFLOW_URI, payload);
-        final var response = client.toBlocking().exchange(request, List.class);
+        final var response = client.toBlocking().exchange(request, DialogflowResponsePayload.class);
 
         assertEquals(HttpStatus.OK, response.getStatus());
         assertTrue(response.getBody().isPresent());
-        assertEquals(INGREDIENTS, response.getBody().get());
+        assertEquals(responseFromIngredientList(INGREDIENTS), response.getBody().get());
     }
 
     @Test
@@ -57,11 +58,6 @@ class DialogflowFulfillmentControllerTest {
         final var request = HttpRequest.POST(DIALOGFLOW_URI, payload);
 
         assertThrows(HttpClientResponseException.class, () -> client.toBlocking().exchange(request, String.class));
-
-//        final var response = client.toBlocking().exchange(request, String.class);
-
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
-//        assertFalse(response.getBody().isPresent());
     }
 
     @MockBean(DialogflowFulfillmentServiceImpl.class)
