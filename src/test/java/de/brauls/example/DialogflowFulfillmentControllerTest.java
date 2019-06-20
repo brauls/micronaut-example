@@ -25,7 +25,7 @@ class DialogflowFulfillmentControllerTest {
     private static final String DIALOGFLOW_URI = "/dialogflow";
 
     private static final String QUERY_TEXT = "queryText";
-    private static final String FULFILLMENT_TEXT = "fulfillmentText";
+    private static final Boolean REQUIRED_PARAMS_PRESENT = true;
     private static final String RESPONSE_ID = "response-1";
     private static final String SESSION_ID = "session-1";
 
@@ -70,12 +70,12 @@ class DialogflowFulfillmentControllerTest {
     }
 
     private DialogflowRequestPayload validPayload() {
-        final var queryResult = new DialogflowQueryResult(QUERY_TEXT, FULFILLMENT_TEXT);
+        final var queryResult = new DialogflowQueryResult(QUERY_TEXT, REQUIRED_PARAMS_PRESENT);
         return new DialogflowRequestPayload(RESPONSE_ID, SESSION_ID, queryResult);
     }
 
     private DialogflowRequestPayload inValidPayload() {
-        final var queryResult = new DialogflowQueryResult(QUERY_TEXT, FULFILLMENT_TEXT);
+        final var queryResult = new DialogflowQueryResult(QUERY_TEXT, REQUIRED_PARAMS_PRESENT);
         return new DialogflowRequestPayload(null, SESSION_ID, queryResult);
     }
 }
